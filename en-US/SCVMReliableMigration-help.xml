@@ -1,0 +1,581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Move-SCPoweredDownVirtualMachine</command:name>
+      <command:verb>Move</command:verb>
+      <command:noun>SCPoweredDownVirtualMachine</command:noun>
+      <maml:description>
+        <maml:para>Initially an internal function, contains code necessary to process a powered down VM. It might become handy in case you want to migrate just a single powered down VM, w/o worrying about its network settings.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Initially an internal function, contains code necessary to process a powered down VM. It might become handy in case you want to migrate just a single powered down VM, w/o worrying about its network settings.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Move-SCPoweredDownVirtualMachine</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>VM</maml:name>
+          <maml:Description>
+            <maml:para>A virtual machine object which you would like to migrate.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.VM</command:parameterValue>
+          <dev:type>
+            <maml:name>Microsoft.SystemCenter.VirtualMachineManager.VM</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>VMHost</maml:name>
+          <maml:Description>
+            <maml:para>A VMHost object of a Hyper-V host where you want to migrate virtual machines.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.Host</command:parameterValue>
+          <dev:type>
+            <maml:name>Microsoft.SystemCenter.VirtualMachineManager.Host</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:Description>
+            <maml:para>A location on the destination host where virtual machines should be stored.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>VM</maml:name>
+        <maml:Description>
+          <maml:para>A virtual machine object which you would like to migrate.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.VM</command:parameterValue>
+        <dev:type>
+          <maml:name>Microsoft.SystemCenter.VirtualMachineManager.VM</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>VMHost</maml:name>
+        <maml:Description>
+          <maml:para>A VMHost object of a Hyper-V host where you want to migrate virtual machines.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.Host</command:parameterValue>
+        <dev:type>
+          <maml:name>Microsoft.SystemCenter.VirtualMachineManager.Host</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:Description>
+          <maml:para>A location on the destination host where virtual machines should be stored.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>$VM = Get-SCVirtualMachine -Name 'SRVDC01' -VMMServer SRVVMM01
+Move-SCPoweredDownVirtualMachine -VM $VM -DestinationVMHost (Get-SCVMHost -ComputerName SRVHV02 -VMMServer SRVVMM01) -Path 'D:\VirtualMachines'</dev:code>
+        <dev:remarks>
+          <maml:para>Migrates a virtual machine SRVDC01 to a Hyper-V host SRVHV02, placing them into the "D:\VirtualMachines" folder.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Move-SCVirtualMachineReliably</command:name>
+      <command:verb>Move</command:verb>
+      <command:noun>SCVirtualMachineReliably</command:noun>
+      <maml:description>
+        <maml:para>This is a main function in the module. Use it to migrate virtual machines without hassle.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This is a main function in the module. Use it to migrate virtual machines without hassle.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Move-SCVirtualMachineReliably</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>VM</maml:name>
+          <maml:Description>
+            <maml:para>A virtual machine objects which you would like to migrate.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.VM[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Microsoft.SystemCenter.VirtualMachineManager.VM[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DestinationVMHost</maml:name>
+          <maml:Description>
+            <maml:para>A VMHost object of a Hyper-V host where you want to migrate virtual machines.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.Host</command:parameterValue>
+          <dev:type>
+            <maml:name>Microsoft.SystemCenter.VirtualMachineManager.Host</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:Description>
+            <maml:para>A location on the destination host where virtual machines should be stored.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>MaxAttempts</maml:name>
+          <maml:Description>
+            <maml:para>If a migration of a VM fails, the function will try again. This parameter specifies the maximum number of attempts.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Timeout</maml:name>
+          <maml:Description>
+            <maml:para>When the migration queue is full, the function will wait some time before checking the queue's status again. This parameter specifies how long will it wait.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>BackupThreshold</maml:name>
+          <maml:Description>
+            <maml:para>If a VM is backing up - you cannot migrate it. In that case, the function will ignore the for some time. This parameters specifies for how long the function will wait for the backup to complete before declaring the VM unmigratable.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">TimeSpan</command:parameterValue>
+          <dev:type>
+            <maml:name>TimeSpan</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Bulletproof</maml:name>
+          <maml:Description>
+            <maml:para>Enabling this parameter refreshes VM status more frequently, but it is a performance hit.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>CrashOnUnmigratable</maml:name>
+          <maml:Description>
+            <maml:para>By default, at the end, the function returns all machines which it was unable to migrate. Enabling this parameter changes the function's behavior to raise an exception as soon as an unmigratable machine is found.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>MigrationJobGetMaxAttempts</maml:name>
+          <maml:Description>
+            <maml:para>When an asynchronous migration of a VM starts, it needs some time before appearing in the list of jobs. Before proceeding to the next VM, the function tries to find the migration job it has just created in the list. This parameter specifies the maximum number of such attempts.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>MigrationJobGetTimeout</maml:name>
+          <maml:Description>
+            <maml:para>When an asynchronous migration of a VM starts, it needs some time before appearing in the list of jobs. Before proceeding to the next VM, the function tries to find the migration job it has just created in the list. This parameter specifies how long the function will wait between retries (`-MigrationJobGetMaxAttempts` parameter).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Move-SCVirtualMachineReliably</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>SourceVMHost</maml:name>
+          <maml:Description>
+            <maml:para>If you want to migrate ALL VMs from a Hyper-V host, you can just specify its VMHost object, instead of passing each VM at the host to the `-VM` parameter.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.Host</command:parameterValue>
+          <dev:type>
+            <maml:name>Microsoft.SystemCenter.VirtualMachineManager.Host</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DestinationVMHost</maml:name>
+          <maml:Description>
+            <maml:para>A VMHost object of a Hyper-V host where you want to migrate virtual machines.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.Host</command:parameterValue>
+          <dev:type>
+            <maml:name>Microsoft.SystemCenter.VirtualMachineManager.Host</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Path</maml:name>
+          <maml:Description>
+            <maml:para>A location on the destination host where virtual machines should be stored.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>MaxAttempts</maml:name>
+          <maml:Description>
+            <maml:para>If a migration of a VM fails, the function will try again. This parameter specifies the maximum number of attempts.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Timeout</maml:name>
+          <maml:Description>
+            <maml:para>When the migration queue is full, the function will wait some time before checking the queue's status again. This parameter specifies how long will it wait.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>BackupThreshold</maml:name>
+          <maml:Description>
+            <maml:para>If a VM is backing up - you cannot migrate it. In that case, the function will ignore the for some time. This parameters specifies for how long the function will wait for the backup to complete before declaring the VM unmigratable.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">TimeSpan</command:parameterValue>
+          <dev:type>
+            <maml:name>TimeSpan</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Bulletproof</maml:name>
+          <maml:Description>
+            <maml:para>Enabling this parameter refreshes VM status more frequently, but it is a performance hit.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>CrashOnUnmigratable</maml:name>
+          <maml:Description>
+            <maml:para>By default, at the end, the function returns all machines which it was unable to migrate. Enabling this parameter changes the function's behavior to raise an exception as soon as an unmigratable machine is found.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>MigrationJobGetMaxAttempts</maml:name>
+          <maml:Description>
+            <maml:para>When an asynchronous migration of a VM starts, it needs some time before appearing in the list of jobs. Before proceeding to the next VM, the function tries to find the migration job it has just created in the list. This parameter specifies the maximum number of such attempts.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>MigrationJobGetTimeout</maml:name>
+          <maml:Description>
+            <maml:para>When an asynchronous migration of a VM starts, it needs some time before appearing in the list of jobs. Before proceeding to the next VM, the function tries to find the migration job it has just created in the list. This parameter specifies how long the function will wait between retries (`-MigrationJobGetMaxAttempts` parameter).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>VM</maml:name>
+        <maml:Description>
+          <maml:para>A virtual machine objects which you would like to migrate.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.VM[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Microsoft.SystemCenter.VirtualMachineManager.VM[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>SourceVMHost</maml:name>
+        <maml:Description>
+          <maml:para>If you want to migrate ALL VMs from a Hyper-V host, you can just specify its VMHost object, instead of passing each VM at the host to the `-VM` parameter.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.Host</command:parameterValue>
+        <dev:type>
+          <maml:name>Microsoft.SystemCenter.VirtualMachineManager.Host</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DestinationVMHost</maml:name>
+        <maml:Description>
+          <maml:para>A VMHost object of a Hyper-V host where you want to migrate virtual machines.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Microsoft.SystemCenter.VirtualMachineManager.Host</command:parameterValue>
+        <dev:type>
+          <maml:name>Microsoft.SystemCenter.VirtualMachineManager.Host</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:Description>
+          <maml:para>A location on the destination host where virtual machines should be stored.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>MaxAttempts</maml:name>
+        <maml:Description>
+          <maml:para>If a migration of a VM fails, the function will try again. This parameter specifies the maximum number of attempts.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Timeout</maml:name>
+        <maml:Description>
+          <maml:para>When the migration queue is full, the function will wait some time before checking the queue's status again. This parameter specifies how long will it wait.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>BackupThreshold</maml:name>
+        <maml:Description>
+          <maml:para>If a VM is backing up - you cannot migrate it. In that case, the function will ignore the for some time. This parameters specifies for how long the function will wait for the backup to complete before declaring the VM unmigratable.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">TimeSpan</command:parameterValue>
+        <dev:type>
+          <maml:name>TimeSpan</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Bulletproof</maml:name>
+        <maml:Description>
+          <maml:para>Enabling this parameter refreshes VM status more frequently, but it is a performance hit.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>CrashOnUnmigratable</maml:name>
+        <maml:Description>
+          <maml:para>By default, at the end, the function returns all machines which it was unable to migrate. Enabling this parameter changes the function's behavior to raise an exception as soon as an unmigratable machine is found.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>MigrationJobGetMaxAttempts</maml:name>
+        <maml:Description>
+          <maml:para>When an asynchronous migration of a VM starts, it needs some time before appearing in the list of jobs. Before proceeding to the next VM, the function tries to find the migration job it has just created in the list. This parameter specifies the maximum number of such attempts.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>MigrationJobGetTimeout</maml:name>
+        <maml:Description>
+          <maml:para>When an asynchronous migration of a VM starts, it needs some time before appearing in the list of jobs. Before proceeding to the next VM, the function tries to find the migration job it has just created in the list. This parameter specifies how long the function will wait between retries (`-MigrationJobGetMaxAttempts` parameter).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>Microsoft.SystemCenter.VirtualMachineManager.VM[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>Microsoft.SystemCenter.VirtualMachineManager.Host</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Microsoft.SystemCenter.VirtualMachineManager.VM</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>$VMs = Get-SCVirtualMachine -VMHost (Get-SCVMHost -ComputerName SRVHV01 -VMMServer SRVVMM01) | Where-Object -FilterScript {$_.Name -like 'SRVSP*'}
+Move-SCVirtualMachineReliably -VM $VMs -DestinationVMHost (Get-SCVMHost -ComputerName SRVHV02 -VMMServer SRVVMM01) -Path 'D:\VirtualMachines'</dev:code>
+        <dev:remarks>
+          <maml:para>Migrates all virtual machines, which name starts with "SRVSP*", from a Hyper-V host SRVHV01 to SRVHV02, placing them into the "D:\VirtualMachines" folder at SRVHV02.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>Move-SCVirtualMachineReliably -SourceVMHost (Get-SCVMHost -ComputerName SRVHV01 -VMMServer SRVVMM01) -DestinationVMHost (Get-SCVMHost -ComputerName SRVHV02 -VMMServer SRVVMM01) -Path 'D:\VirtualMachines'</dev:code>
+        <dev:remarks>
+          <maml:para>Migrates all virtual machines from a Hyper-V host SRVHV01 to SRVHV02, placing them into the "D:\VirtualMachines" folder at SRVHV02.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>$VMs = Get-SCVirtualMachine -VMHost (Get-SCVMHost -ComputerName SRVHV01 -VMMServer SRVVMM01) | Where-Object -FilterScript {$_.Name -like 'SRVSP*'}
+Move-SCVirtualMachineReliably -VM $VMs -DestinationVMHost (Get-SCVMHost -ComputerName SRVHV02 -VMMServer SRVVMM01) -Path 'D:\VirtualMachines' -BackupThreshold (New-Object -TypeName 'System.TimeSpan' -ArgumentList @(2, 0, 0))</dev:code>
+        <dev:remarks>
+          <maml:para>Migrates all virtual machines, which name starts with "SRVSP*", from a Hyper-V host SRVHV01 to SRVHV02, placing them into the "D:\VirtualMachines" folder at SRVHV02. If any machine is in the backing up state, the function will wait for no more than two hours to let the backup process to finish.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+</helpItems>
