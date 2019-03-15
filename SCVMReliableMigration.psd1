@@ -1,6 +1,6 @@
 @{
     RootModule        = 'SCVMReliableMigration.psm1'
-    ModuleVersion     = '1.0.6'
+    ModuleVersion     = '1.1.0'
     GUID              = '71e06da4-4888-4f09-9af0-f92d52cc1cda'
     Author            = 'Kirill Nikolaev'
     CompanyName       = 'Fozzy Inc.'
