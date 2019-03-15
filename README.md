@@ -27,6 +27,10 @@ There are several variables defined in the .psm1-file, which are used by the mod
 
 `[int]$ModuleWideMigrationTimeout` - default value for **Move-SCVirtualMachineReliably**'s `-Timeout` parameter
 
+`[int]$ModuleWideMigrationJobGetTimeout` - default value for **Move-SCVirtualMachineReliably**'s `-MigrationJobGetTimeout` parameter
+
+`[int]$ModuleWideMigrationJobGetMaxAttempts` - default value for **Move-SCVirtualMachineReliably**'s `-MigrationJobGetMaxAttempts` parameter
+
 `[System.TimeSpan]$ModuleWideBackupThreshold` - default value for **Move-SCVirtualMachineReliably**'s `-BackupThreshold` parameter
 
 ## Loading variables from an external source
