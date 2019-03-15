@@ -25,6 +25,10 @@ function Move-SCVirtualMachineReliably {
         [Parameter(ParameterSetName = 'ByHost')]
         [Parameter(ParameterSetName = 'ByVM')]
         [ValidateRange(0, [int]::MaxValue)]
+        [int]$MaxParallelMigrations,
+        [Parameter(ParameterSetName = 'ByHost')]
+        [Parameter(ParameterSetName = 'ByVM')]
+        [ValidateRange(0, [int]::MaxValue)]
         [int]$MigrationJobGetTimeout = $ModuleWideMigrationJobGetTimeout,
         [Parameter(ParameterSetName = 'ByHost')]
         [Parameter(ParameterSetName = 'ByVM')]
@@ -53,6 +57,7 @@ function Move-SCVirtualMachineReliably {
         Write-Debug -Message ('$Path = ''{0}''' -f $Path)
         Write-Debug -Message ('$Timeout = {0}' -f $Timeout)
         Write-Debug -Message ('$MaxAttempts = {0}' -f $MaxAttempts)
+        Write-Debug -Message ('$MaxParallelMigrations = {0}' -f $MaxParallelMigrations)
         Write-Debug -Message ('$MigrationJobGetTimeout = {0}' -f $MigrationJobGetTimeout)
         Write-Debug -Message ('$MigrationJobGetMaxAttempts = {0}' -f $MigrationJobGetMaxAttempts)
         Write-Debug -Message ('$VM: ''{0}''' -f [string]$VM.Name)
@@ -126,6 +131,14 @@ function Move-SCVirtualMachineReliably {
                     Write-Debug -Message ('$DestinationVMHostLiveMigrationMaximum = {0}' -f $DestinationVMHostLiveMigrationMaximum)
                     Write-Debug -Message ('$LiveMigrationMaximum = (({0}, {1}) | Measure-Object -Minimum).Minimum' -f $SourceVMHostLiveMigrationMaximum, $DestinationVMHostLiveMigrationMaximum)
                     $LiveMigrationMaximum = (($SourceVMHostLiveMigrationMaximum, $DestinationVMHostLiveMigrationMaximum) | Measure-Object -Minimum).Minimum
+                    Write-Debug -Message ('$LiveMigrationMaximum = {0}' -f $LiveMigrationMaximum)
+
+                    Write-Debug -Message ('$MaxParallelMigrations = {0}' -f $MaxParallelMigrations)
+                    Write-Debug -Message 'if ($MaxParallelMigrations)'
+                    if ($MaxParallelMigrations) {
+                        Write-Debug -Message ('$LiveMigrationMaximum = (({0}, {1}) | Measure-Object -Minimum).Minimum' -f $LiveMigrationMaximum, $MaxParallelMigrations)
+                        $LiveMigrationMaximum = (($LiveMigrationMaximum, $MaxParallelMigrations) | Measure-Object -Minimum).Minimum
+                    }
                     Write-Debug -Message ('$LiveMigrationMaximum = {0}' -f $LiveMigrationMaximum)
 
                     do {
