@@ -192,6 +192,18 @@ Move-SCPoweredDownVirtualMachine -VM $VM -DestinationVMHost (Get-SCVMHost -Compu
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>MaxParallelMigrations</maml:name>
+          <maml:Description>
+            <maml:para>Sets the maximum number of parallel live migrations. If the parameter is not set, the minimum value between LiveMigrationMaximum properties of all affected hypervisors is used. If the parameter is set but exceeds that minimum value, the minimum value is used.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Timeout</maml:name>
           <maml:Description>
             <maml:para>When the migration queue is full, the function will wait some time before checking the queue's status again. This parameter specifies how long will it wait.</maml:para>
@@ -304,6 +316,18 @@ Move-SCPoweredDownVirtualMachine -VM $VM -DestinationVMHost (Get-SCVMHost -Compu
           <maml:name>MaxAttempts</maml:name>
           <maml:Description>
             <maml:para>If a migration of a VM fails, the function will try again. This parameter specifies the maximum number of attempts.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>MaxParallelMigrations</maml:name>
+          <maml:Description>
+            <maml:para>Sets the maximum number of parallel live migrations. If the parameter is not set, the minimum value between LiveMigrationMaximum properties of all affected hypervisors is used. If the parameter is set but exceeds that minimum value, the minimum value is used.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -437,6 +461,18 @@ Move-SCPoweredDownVirtualMachine -VM $VM -DestinationVMHost (Get-SCVMHost -Compu
         <maml:name>MaxAttempts</maml:name>
         <maml:Description>
           <maml:para>If a migration of a VM fails, the function will try again. This parameter specifies the maximum number of attempts.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>MaxParallelMigrations</maml:name>
+        <maml:Description>
+          <maml:para>Sets the maximum number of parallel live migrations. If the parameter is not set, the minimum value between LiveMigrationMaximum properties of all affected hypervisors is used. If the parameter is set but exceeds that minimum value, the minimum value is used.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>

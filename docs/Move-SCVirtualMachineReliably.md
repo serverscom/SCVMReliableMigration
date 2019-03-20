@@ -15,14 +15,14 @@ This is a main function in the module. Use it to migrate virtual machines withou
 ### ByHost
 ```
 Move-SCVirtualMachineReliably -SourceVMHost <Host> -DestinationVMHost <Host> -Path <String> [-Timeout <Int32>]
- [-MaxAttempts <Int32>] [-MigrationJobGetTimeout <Int32>] [-MigrationJobGetMaxAttempts <Int32>]
+ [-MaxAttempts <Int32>] [-MaxParallelMigrations <Int32>] [-MigrationJobGetTimeout <Int32>] [-MigrationJobGetMaxAttempts <Int32>]
  [-BackupThreshold <TimeSpan>] [-Bulletproof] [-CrashOnUnmigratable] [<CommonParameters>]
 ```
 
 ### ByVM
 ```
 Move-SCVirtualMachineReliably -VM <VM[]> -DestinationVMHost <Host> -Path <String> [-Timeout <Int32>]
- [-MaxAttempts <Int32>] [-MigrationJobGetTimeout <Int32>] [-MigrationJobGetMaxAttempts <Int32>]
+ [-MaxAttempts <Int32>] [-MaxParallelMigrations <Int32>] [-MigrationJobGetTimeout <Int32>] [-MigrationJobGetMaxAttempts <Int32>]
  [-BackupThreshold <TimeSpan>] [-Bulletproof] [-CrashOnUnmigratable] [<CommonParameters>]
 ```
 
@@ -118,6 +118,21 @@ Accept wildcard characters: False
 
 ### -MaxAttempts
 If a migration of a VM fails, the function will try again. This parameter specifies the maximum number of attempts.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MaxParallelMigrations
+Sets the maximum number of parallel live migrations. If the parameter is not set, the minimum value between LiveMigrationMaximum properties of all affected hypervisors is used. If the parameter is set but exceeds that minimum value, the minimum value is used.
 
 ```yaml
 Type: Int32
