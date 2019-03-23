@@ -84,8 +84,15 @@ function Move-SCPoweredDownVirtualMachine {
                 # Better safe than sorry
 
                 Write-Verbose -Message ('Moving a powered-down VM {0} from {1} to {2}' -f $VM.Name, $VM.VMHost.Name, $DestinationVMHost.Name)
-                Write-Debug -Message ('$null = Move-SCVirtualMachine -VM $VM -VMHost $DestinationVMHost -Path ''{0}'' -JobGroup ''{1}''' -f $Path, $JobGroupId)
-                $null = Move-SCVirtualMachine -VM $VM -VMHost $DestinationVMHost -Path $Path -JobGroup $JobGroupId
+                try {
+                    Write-Debug -Message ('$null = Move-SCVirtualMachine -VM $VM -VMHost $DestinationVMHost -Path ''{0}'' -JobGroup ''{1}''' -f $Path, $JobGroupId)
+                    $null = Move-SCVirtualMachine -VM $VM -VMHost $DestinationVMHost -Path $Path -JobGroup $JobGroupId
+                }
+                catch {
+                    Write-Debug -Message ($_)
+                    Write-Debug -Message 'return'
+                    return
+                }
 
                 Write-Debug -Message ('$HVACL: ''{0}''' -f [string]$HVACL)
                 Write-Debug -Message 'if ($HVACL)'

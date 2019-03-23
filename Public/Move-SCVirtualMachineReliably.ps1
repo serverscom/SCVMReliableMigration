@@ -306,8 +306,17 @@ function Move-SCVirtualMachineReliably {
                                                 $null = $VMMigrationRetryInfo.Add($SCVM)
                                                 Write-Debug -Message ('$VMMigrationRetryInfo: ''{0}''' -f [string]$VMMigrationRetryInfo.Name)
                                                 Write-Verbose -Message ('Trying to live-migrate a VM {0} from {1} to {2}' -f $SCVM.Name, $SCVM.VMHost.Name, $DestinationVMHost.Name)
-                                                Write-Debug -Message ('$null = Move-SCVirtualMachine -VM $SCVM -VMHost $DestinationVMHost -Path ''{0}'' -RunAsynchronously' -f $Path)
-                                                $null = Move-SCVirtualMachine -VM $SCVM -VMHost $DestinationVMHost -Path $Path -RunAsynchronously
+                                                try {
+                                                    Write-Debug -Message ('$null = Move-SCVirtualMachine -VM $SCVM -VMHost $DestinationVMHost -Path ''{0}'' -RunAsynchronously' -f $Path)
+                                                    $null = Move-SCVirtualMachine -VM $SCVM -VMHost $DestinationVMHost -Path $Path -RunAsynchronously
+                                                }
+                                                catch {
+                                                    Write-Debug -Message ($_)
+                                                    Write-Debug -Message '$null = Read-SCVirtualMachine -VM $SCVM'
+                                                    $null = Read-SCVirtualMachine -VM $SCVM
+                                                    Write-Debug -Message 'Continue'
+                                                    Continue
+                                                }
                                                 Write-Debug -Message ('$MigrationJobGetMaxAttempts = {0}' -f $MigrationJobGetMaxAttempts)
                                                 Write-Debug -Message 'for ($MigrationJobGetCounter = 0; $MigrationJobGetCounter -lt $MigrationJobGetMaxAttempts; $MigrationJobGetCounter++)'
                                                 for ($MigrationJobGetCounter = 0; $MigrationJobGetCounter -lt $MigrationJobGetMaxAttempts; $MigrationJobGetCounter++) {
