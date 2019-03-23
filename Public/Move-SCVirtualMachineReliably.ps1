@@ -312,6 +312,7 @@ function Move-SCVirtualMachineReliably {
                                                 }
                                                 catch {
                                                     Write-Debug -Message ($_)
+                                                    Write-Debug -Message ('Exception.HResult: {0}' -f $_.Exception.HResult)
                                                     Write-Debug -Message '$null = Read-SCVirtualMachine -VM $SCVM'
                                                     $null = Read-SCVirtualMachine -VM $SCVM
                                                     Write-Debug -Message 'Continue'

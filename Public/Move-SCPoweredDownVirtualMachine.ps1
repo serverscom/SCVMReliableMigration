@@ -90,6 +90,7 @@ function Move-SCPoweredDownVirtualMachine {
                 }
                 catch {
                     Write-Debug -Message ($_)
+                    Write-Debug -Message ('Exception.HResult: {0}' -f $_.Exception.HResult)
                     Write-Debug -Message 'return'
                     return
                 }
