@@ -6,6 +6,7 @@
     CompanyName       = 'Fozzy Inc.'
     Copyright         = '(c) 2018 Fozzy Inc. All rights reserved.'
     PowerShellVersion = '3.0'
+    Description       = 'Solves 4 problems which you most certainly bump into, when migrating VMs in a shared-nothing Hyper-V environment.'
     RequiredModules   = @(
         'virtualmachinemanager'
     )
@@ -15,4 +16,15 @@
     )
     CmdletsToExport   = @()
     AliasesToExport   = @()
+    PrivateData       = @{
+        PSData = @{
+            Tags                       = @()
+            LicenseUri                 = 'https://github.com/FozzyHosting/SCVMReliableMigration/blob/master/LICENSE'
+            ProjectUri                 = 'https://github.com/FozzyHosting/SCVMReliableMigration/'
+            ReleaseNotes               = ''
+            ExternalModuleDependencies = @(
+                'virtualmachinemanager'
+            )
+        }  
+    }
 }
