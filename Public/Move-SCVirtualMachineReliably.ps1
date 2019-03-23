@@ -258,6 +258,17 @@ function Move-SCVirtualMachineReliably {
                                     $SCVirtualMachineLiveMigrationEligibility = Test-SCVirtualMachineLiveMigrationEligibility -VM $SCVM -VMHost $DestinationVMHost
                                     Write-Debug -Message ('$SCVirtualMachineLiveMigrationEligibility.Result: ''{0}''' -f $SCVirtualMachineLiveMigrationEligibility.Result)
                                     Write-Debug -Message ('$SCVirtualMachineLiveMigrationEligibility.Reason: ''{0}''' -f $SCVirtualMachineLiveMigrationEligibility.Reason)
+                                    
+                                    Write-Debug -Message 'if ($SCVirtualMachineLiveMigrationEligibility.Status -eq [Microsoft.VirtualManager.Utils.VMComputerSystemState]::IncompleteVMConfig)'
+                                    if ($SCVirtualMachineLiveMigrationEligibility.Status -eq [Microsoft.VirtualManager.Utils.VMComputerSystemState]::IncompleteVMConfig) {
+                                        Write-Debug -Message '$null = Read-SCVirtualMachine -VM $SCVM'
+                                        $null = Read-SCVirtualMachine -VM $SCVM
+                                        Write-Debug -Message '$null = $VMMigrationRetryInfo.Add($SCVM)'
+                                        $null = $VMMigrationRetryInfo.Add($SCVM)
+                                        Write-Debug -Message 'Continue'
+                                        Continue
+                                    }
+                                    
                                     Write-Debug -Message 'if ($SCVirtualMachineLiveMigrationEligibility.Result -or $SCVirtualMachineLiveMigrationEligibility.Reason -eq ''NotRunning'')'
                                     if ($SCVirtualMachineLiveMigrationEligibility.Result -or $SCVirtualMachineLiveMigrationEligibility.Reason -eq 'NotRunning') {
                                         $VMMigrationRetryInfoCount = ($VMMigrationRetryInfo | Where-Object -FilterScript {$_ -eq $SCVM}).Count
