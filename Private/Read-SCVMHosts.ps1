@@ -17,12 +17,14 @@ function Read-SCVMHosts {
         Write-Debug -Message ('ENTER TRY {0}' -f $MyInvocation.MyCommand.Name)
 
         Write-Debug -Message ('$VMHost: ''{0}''' -f [string]$VMHost)
+        Write-Debug -Message ('$MaxAttempts = {0}' -f $MaxAttempts)
+        Write-Debug -Message ('$Timeout = {0}' -f $Timeout)
 
         foreach ($SCVMHost in $VMHost) {
             Write-Debug -Message ('$SCVMHost: ''{0}''' -f [string]$SCVMHost)
             for ($Count = 0; $Count -le $MaxAttempts; $Count++) {
                 Write-Debug -Message ('$Count = {0}' -f $Count)
-                Try {
+                try {
                     Write-Debug -Message '$ReadSCVMHost = $null'
                     $ReadSCVMHost = $null
                     Write-Debug -Message '$ReadSCVMHost = Read-SCVMHost -VMHost $SCVMHost'
