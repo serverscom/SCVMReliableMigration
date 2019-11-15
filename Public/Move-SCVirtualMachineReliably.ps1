@@ -171,6 +171,7 @@ function Move-SCVirtualMachineReliably {
                             Write-Debug -Message ('$SourceSCVMsNotMigratingRunning: ''{0}''' -f [string]$SourceSCVMsNotMigratingRunning.Name)
                             Write-Verbose -Message ('VMs left to migrate: {0}' -f [string]$SourceSCVMs.Name)
 
+                            Write-Debug -Message 'if ($SourceSCVMsNotMigratingRunning)'
                             if ($SourceSCVMsNotMigratingRunning) {
                                 Write-Debug -Message '$SourceVMsToMigrate = $SourceSCVMsNotMigratingRunning'
                                 $SourceVMsToMigrate = $SourceSCVMsNotMigratingRunning # We TRY to migrate VMs which have just been running
@@ -468,6 +469,7 @@ function Move-SCVirtualMachineReliably {
                                 }
                             }
 
+                            Write-Debug -Message ('$LastVMWasPoweredDown: ''{0}''' -f $LastVMWasPoweredDown)
                             Write-Debug -Message 'if (-not $LastVMWasPoweredDown)' # No need to wait if the last job was synchronous
                             if (-not $LastVMWasPoweredDown) {
                                 Write-Debug -Message ('Start-Sleep -Seconds {0}' -f $Timeout)
