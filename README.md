@@ -33,6 +33,10 @@ There are several variables defined in the .psm1-file, which are used by the mod
 
 `[System.TimeSpan]$ModuleWideBackupThreshold` - default value for **Move-SCVirtualMachineReliably**'s `-BackupThreshold` parameter
 
+`[int]$ModuleWideHostRefreshMaxAttempts` - Specifies the total number of attempts to refresh SCVMM host information, in case that host is in use by some other tasks
+
+`[int]$ModuleWideHostRefreshTimeout` - Specifies, in seconds, timeout between refresh attempts
+
 ## Loading variables from an external source
 All module-wide variables can be redefined with a `Config.ps1` file, located in the module's root folder. Just put variable definitions in there as you would do with any other PowerShell script. You may find an example of a config file `Config-Example.ps1` in the module's root folder.
 

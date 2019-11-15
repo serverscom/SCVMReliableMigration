@@ -323,6 +323,8 @@ function Move-SCVirtualMachineReliably {
                                                 Write-Debug -Message 'for ($MigrationJobGetCounter = 0; $MigrationJobGetCounter -lt $MigrationJobGetMaxAttempts; $MigrationJobGetCounter++)'
                                                 for ($MigrationJobGetCounter = 0; $MigrationJobGetCounter -lt $MigrationJobGetMaxAttempts; $MigrationJobGetCounter++) {
                                                     Write-Debug -Message ('$MigrationJobGetCounter = {0}' -f $MigrationJobGetCounter)
+                                                    Write-Debug -Message '$VMMigrationJob = $null'
+                                                    $VMMigrationJob = $null
                                                     Write-Debug -Message '$VMMigrationJob = Get-SCVirtualMachineMigrationJob -VM $SCVM'
                                                     $VMMigrationJob = Get-SCVirtualMachineMigrationJob -VM $SCVM
                                                     Write-Debug -Message ('$VMMigrationJob: ''{0}''' -f [string]$VMMigrationJob)

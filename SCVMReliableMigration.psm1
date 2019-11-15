@@ -7,6 +7,8 @@ $ModulePath = $PSScriptRoot
 [int]$ModuleWideMigrationJobGetTimeout = 10
 [int]$ModuleWideMigrationJobGetMaxAttempts = 3
 [System.TimeSpan]$ModuleWideBackupThreshold = New-Object -TypeName 'System.TimeSpan' -ArgumentList @(1, 0, 0)
+[int]$ModuleWideHostRefreshMaxAttempts = 3
+[int]$ModuleWideHostRefreshTimeout = 60
 
 foreach ($FunctionType in @('Private', 'Public')) {
     $Path = Join-Path -Path $ModulePath -ChildPath ('{0}\*.ps1' -f $FunctionType)
