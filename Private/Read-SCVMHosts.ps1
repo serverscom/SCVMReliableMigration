@@ -38,8 +38,8 @@ function Read-SCVMHosts {
                 }
                 catch {
                     Write-Debug -Message ('$_.Exception.HResult: {0}' -f $_.Exception.HResult)
-                    Write-Debug -Message 'if ($_.Exception.HResult -eq 2600)'
-                    if ($_.Exception.HResult -eq 2600) {
+                    Write-Debug -Message 'if ($_.Exception.HResult -eq 2606)'
+                    if ($_.Exception.HResult -eq 2606) {
                         Write-Debug -Message ('$Count: ''{0}''' -f $Count)
                         Write-Debug -Message ('$MaxAttempts: ''{0}''' -f $MaxAttempts)
                         Write-Debug -Message 'if ($Count -ge $MaxAttempts)'
