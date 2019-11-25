@@ -40,8 +40,8 @@ function Read-SCVMHosts {
                     Write-Debug -Message ('$_.Exception.HResult: {0}' -f $_.Exception.HResult)
                     Write-Debug -Message 'if ($_.Exception.HResult -eq 2606)'
                     if ($_.Exception.HResult -eq 2606) {
-                        Write-Debug -Message ('$Count: ''{0}''' -f $Count)
-                        Write-Debug -Message ('$MaxAttempts: ''{0}''' -f $MaxAttempts)
+                        Write-Debug -Message ('$Count = {0}' -f $Count)
+                        Write-Debug -Message ('$MaxAttempts = {0}' -f $MaxAttempts)
                         Write-Debug -Message 'if ($Count -ge $MaxAttempts)'
                         if ($Count -ge $MaxAttempts) {
                             $Message = ('Could not refresh SCVMM Host ''{0}'' after ''{1}'' retries.' -f $SCVMHost, $MaxAttempts)
