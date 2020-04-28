@@ -20,6 +20,7 @@ function Read-SCVMHosts {
         Write-Debug -Message ('$MaxAttempts = {0}' -f $MaxAttempts)
         Write-Debug -Message ('$Timeout = {0}' -f $Timeout)
 
+        Write-Debug -Message 'foreach ($SCVMHost in $VMHost)'
         foreach ($SCVMHost in $VMHost) {
             Write-Debug -Message ('$SCVMHost: ''{0}''' -f [string]$SCVMHost)
             for ($Count = 0; $Count -le $MaxAttempts; $Count++) {
