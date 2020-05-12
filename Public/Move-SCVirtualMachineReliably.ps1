@@ -155,7 +155,8 @@ function Move-SCVirtualMachineReliably {
 
                         Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
                         Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)
-                        
+
+                        Write-Debug -Message '$SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript'
                         $SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript $Filter # Getting those VMs of which we care about
                         Write-Debug -Message ('$SourceSCVMs: ''{0}''' -f [string]$SourceSCVMs.Name)
                         Write-Debug -Message 'if ($SourceSCVMs)'
@@ -180,7 +181,7 @@ function Move-SCVirtualMachineReliably {
                                 Write-Debug -Message '$SourceVMsToMigrate = $SourceSCVMsNotMigrating'
                                 $SourceVMsToMigrate = $SourceSCVMsNotMigrating
                             }
-                            
+
                             Write-Debug -Message '$FirstVM = $true'
                             $FirstVM = $true
                             Write-Debug -Message ('$FirstVM: ''{0}''' -f [string]$FirstVM)
@@ -213,7 +214,7 @@ function Move-SCVirtualMachineReliably {
                                 Write-Debug -Message '$SourceVMHostVMs = Get-SCVirtualMachine -VMHost $DestinationVMHost'
                                 $DestinationVMHostVMs = Get-SCVirtualMachine -VMHost $DestinationVMHost
                                 Write-Debug -Message ('$DestinationVMHostVMs: ''{0}''' -f [string]$SourceSCVMsNotMigratingRunning.Name)
-                                
+
                                 Write-Debug -Message '$SourceVMHostMigratingVMs = $SourceVMHostVMs | Where-Object -FilterScript {$_.Status -in $SCVMStatesMigrating}'
                                 $SourceVMHostMigratingVMs = $SourceVMHostVMs | Where-Object -FilterScript {$_.Status -in $SCVMStatesMigrating}
                                 Write-Debug -Message ('$SourceVMHostMigratingVMs: ''{0}''' -f [string]$SourceVMHostMigratingVMs.Name)
@@ -259,7 +260,7 @@ function Move-SCVirtualMachineReliably {
                                     $SCVirtualMachineLiveMigrationEligibility = Test-SCVirtualMachineLiveMigrationEligibility -VM $SCVM -VMHost $DestinationVMHost
                                     Write-Debug -Message ('$SCVirtualMachineLiveMigrationEligibility.Result: ''{0}''' -f $SCVirtualMachineLiveMigrationEligibility.Result)
                                     Write-Debug -Message ('$SCVirtualMachineLiveMigrationEligibility.Reason: ''{0}''' -f $SCVirtualMachineLiveMigrationEligibility.Reason)
-                                    
+
                                     Write-Debug -Message 'if ($SCVirtualMachineLiveMigrationEligibility.Status -eq [Microsoft.VirtualManager.Utils.VMComputerSystemState]::IncompleteVMConfig)'
                                     if ($SCVirtualMachineLiveMigrationEligibility.Status -eq [Microsoft.VirtualManager.Utils.VMComputerSystemState]::IncompleteVMConfig) {
                                         Write-Debug -Message '$null = Read-SCVirtualMachine -VM $SCVM'
@@ -269,7 +270,7 @@ function Move-SCVirtualMachineReliably {
                                         Write-Debug -Message 'Continue'
                                         Continue
                                     }
-                                    
+
                                     Write-Debug -Message 'if ($SCVirtualMachineLiveMigrationEligibility.Result -or $SCVirtualMachineLiveMigrationEligibility.Reason -eq ''NotRunning'')'
                                     if ($SCVirtualMachineLiveMigrationEligibility.Result -or $SCVirtualMachineLiveMigrationEligibility.Reason -eq 'NotRunning') {
                                         $VMMigrationRetryInfoCount = ($VMMigrationRetryInfo | Where-Object -FilterScript {$_ -eq $SCVM}).Count
