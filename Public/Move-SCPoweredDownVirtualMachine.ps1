@@ -103,8 +103,8 @@ function Move-SCPoweredDownVirtualMachine {
                     Write-Debug -Message ('$MovedHVACL.Count: {0}' -f $MovedHVACL.Count)
                     foreach ($ACL in $HVACL) {
                         Write-Debug -Message ('ACL: Action={0}, Direction={1}, LocalIPAddress={2}, RemoteIPAddress={3}, LocalPort={4}, RemotePort={5}, Protocol={6}, Weight={7}, Stateful={8}, IsolationID={9}, IdleSessionTimeout={10}' -f $ACL.Action, $ACL.Direction, $ACL.LocalIPAddress, $ACL.RemoteIPAddress, $ACL.LocalPort, $ACL.RemotePort, $ACL.Protocol, $ACL.Weight, $ACL.Stateful, $ACL.IsolationID, $ACL.IdleSessionTimeout)
-                        
-                        Write-Debug -Message ('$MovedHVACL: ''{0}''' -f [string]$MovedHVACL)      
+
+                        Write-Debug -Message ('$MovedHVACL: ''{0}''' -f [string]$MovedHVACL)
                         Write-Debug -Message 'if ($MovedHVACL -notcontains $ACL)'
                         if ($MovedHVACL -notcontains $ACL) {
                             Write-Debug -Message ('$AddVMNetworkAdapterExtendedAclSplat = @{{VMName=''{0}''; Action=''{1}''; Direction=''{2}''; LocalIPAddress=''{3}''; RemoteIPAddress=''{4}''; LocalPort=''{5}''; RemotePort=''{6}''; Protocol=''{7}''; Weight=''{8}''; Stateful=''{9}''; IsolationID=''{10}''}}' -f $VM.Name, $ACL.Action, $ACL.Direction, $ACL.LocalIPAddress, $ACL.RemoteIPAddress, $ACL.LocalPort, $ACL.RemotePort, $ACL.Protocol, $ACL.Weight, $ACL.Stateful, $ACL.IsolationID)
@@ -144,7 +144,7 @@ function Move-SCPoweredDownVirtualMachine {
             $Message = 'Source ({0}) and destination ({1}) servers are the same' -f $SourceVMHost, $DestinationVMHost
             $PSCmdlet.ThrowTerminatingError((New-Object -TypeName 'System.Management.Automation.ErrorRecord' -ArgumentList ((New-Object -TypeName 'System.ArgumentException' -ArgumentList $Message), 'ArgumentException', [System.Management.Automation.ErrorCategory]::InvalidArgument, $null)))
         }
-    
+
         Write-Debug -Message ('EXIT TRY {0}' -f $MyInvocation.MyCommand.Name)
     }
     catch {
