@@ -12,12 +12,12 @@ function Test-SCVirtualMachineLiveMigrationEligibility {
     )
 
     $ErrorActionPreference = 'Stop'
-    
+
     Write-Debug -Message ('ENTER {0}' -f $MyInvocation.MyCommand.Name)
-    
+
     try {
         Write-Debug -Message ('ENTER TRY {0}' -f $MyInvocation.MyCommand.Name)
-        
+
         Write-Debug -Message ('$VM: ''{0}''' -f $VM.Name)
         Write-Debug -Message ('$VMHost: ''{0}''' -f [string]$VMHost)
 
