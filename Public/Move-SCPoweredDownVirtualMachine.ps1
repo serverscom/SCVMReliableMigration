@@ -49,30 +49,50 @@ function Move-SCPoweredDownVirtualMachine {
                 Write-Debug -Message '$JobGroupId = ([guid]::NewGuid()).Guid'
                 $JobGroupId = ([guid]::NewGuid()).Guid
                 Write-Debug -Message ('$JobGroupId = ''{0}''' -f $JobGroupId)
+
+                Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments = @{{VirtualNetworkAdapter = $VMNetworkAdapter, JobGroup = ''{0}''}}' -f $JobGroupId)
+                $SetSCVirtualNetworkAdapterArguments = @{
+                    VirtualNetworkAdapter = $VMNetworkAdapter
+                    JobGroup = $JobGroupId
+                }
+                Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments: ''{0}''' -f ($SetSCVirtualNetworkAdapterArguments | Out-String))
+
                 Write-Debug -Message ('$VMNetworkAdapter.VLanEnabled: ''{0}''' -f [string]$VMNetworkAdapter.VLanEnabled)
                 Write-Debug -Message 'if ($VMNetworkAdapter.VLanEnabled)'
                 if ($VMNetworkAdapter.VLanEnabled) {
                     Write-Debug -Message '$VLanID = $VMNetworkAdapter.VLanID'
                     $VLanID = $VMNetworkAdapter.VLanID
                     Write-Debug -Message ('$VLanID = {0}' -f [string]$VLanID)
-                    Write-Debug -Message 'if ($VMNetwork)'
-                    if ($VMNetwork) {
-                        Write-Debug -Message ('$null = Set-SCVirtualNetworkAdapter -VirtualNetworkAdapter $VMNetworkAdapter -VMNetwork $VMNetwork -VLanEnabled $true -VLanID ''{0}'' -JobGroup ''{1}''' -f $VLanID, $JobGroupId)
-                        $null = Set-SCVirtualNetworkAdapter -VirtualNetworkAdapter $VMNetworkAdapter -VMNetwork $VMNetwork -VLanEnabled $true -VLanID $VLanID -JobGroup $JobGroupId
-                    }
-                    else {
-                        Write-Debug -Message ('$null = Set-SCVirtualNetworkAdapter -VirtualNetworkAdapter $VMNetworkAdapter -VLanEnabled $true -VLanID {0} -JobGroup ''{1}''' -f $VLanID, $JobGroupId)
-                        $null = Set-SCVirtualNetworkAdapter -VirtualNetworkAdapter $VMNetworkAdapter -VLanEnabled $true -VLanID $VLanID -JobGroup $JobGroupId
-                    }
+
+                    Write-Debug -Message '$SetSCVirtualNetworkAdapterArguments.Add(''VLanEnabled'', $true)'
+                    $SetSCVirtualNetworkAdapterArguments.Add('VLanEnabled', $true)
+                    Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments.Add(''VLanID'', {0})' -f $VLanID)
+                    $SetSCVirtualNetworkAdapterArguments.Add('VLanID', $VLanID)
                 }
-                elseif ($VMNetwork) {
-                    Write-Debug -Message ('$null = Set-SCVirtualNetworkAdapter -VirtualNetworkAdapter $VMNetworkAdapter -VMNetwork $VMNetwork -JobGroup ''{0}''' -f $JobGroupId)
-                    $null = Set-SCVirtualNetworkAdapter -VirtualNetworkAdapter $VMNetworkAdapter -VMNetwork $VMNetwork -JobGroup $JobGroupId
+                Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments: ''{0}''' -f ($SetSCVirtualNetworkAdapterArguments | Out-String))
+
+                Write-Debug -Message ('$VMNetwork: ''{0}''' -f [string]$VMNetwork)
+                Write-Debug -Message ('$VMNetwork.Name: ''{0}''' -f $VMNetwork.Name)
+                Write-Debug -Message ('$VMNetwork.ID: ''{0}''' -f $VMNetwork.ID)
+                Write-Debug -Message 'if ($VMNetwork)'
+                if ($VMNetwork) {
+                    Write-Debug -Message '$SetSCVirtualNetworkAdapterArguments.Add(''VMNetwork'', $VMNetwork)'
+                    $SetSCVirtualNetworkAdapterArguments.Add('VMNetwork', $VMNetwork)
                 }
-                else {
-                    Write-Debug -Message ('$null = Set-SCVirtualNetworkAdapter -VirtualNetworkAdapter $VMNetworkAdapter -JobGroup ''{0}''' -f $JobGroupId)
-                    $null = Set-SCVirtualNetworkAdapter -VirtualNetworkAdapter $VMNetworkAdapter -JobGroup $JobGroupId
+                Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments: ''{0}''' -f ($SetSCVirtualNetworkAdapterArguments | Out-String))
+
+                Write-Debug -Message '$VirtualNetwork = $VMNetworkAdapter.VirtualNetwork'
+                $VirtualNetwork = $VMNetworkAdapter.VirtualNetwork
+                Write-Debug -Message ('$VirtualNetwork = ''{0}''' -f $VirtualNetwork)
+                Write-Debug -Message 'if ($VirtualNetwork)'
+                if ($VirtualNetwork) {
+                    Write-Debug -Message '$SetSCVirtualNetworkAdapterArguments.Add(''VirtualNetwork'', $VirtualNetwork)'
+                    $SetSCVirtualNetworkAdapterArguments.Add('VirtualNetwork', $VirtualNetwork)
                 }
+                Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments: ''{0}''' -f ($SetSCVirtualNetworkAdapterArguments | Out-String))
+
+                Write-Debug -Message '$null = Set-SCVirtualNetworkAdapter @SetSCVirtualNetworkAdapterArguments'
+                $null = Set-SCVirtualNetworkAdapter @SetSCVirtualNetworkAdapterArguments
             }
 
             Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
@@ -103,8 +123,8 @@ function Move-SCPoweredDownVirtualMachine {
                     Write-Debug -Message ('$MovedHVACL.Count: {0}' -f $MovedHVACL.Count)
                     foreach ($ACL in $HVACL) {
                         Write-Debug -Message ('ACL: Action={0}, Direction={1}, LocalIPAddress={2}, RemoteIPAddress={3}, LocalPort={4}, RemotePort={5}, Protocol={6}, Weight={7}, Stateful={8}, IsolationID={9}, IdleSessionTimeout={10}' -f $ACL.Action, $ACL.Direction, $ACL.LocalIPAddress, $ACL.RemoteIPAddress, $ACL.LocalPort, $ACL.RemotePort, $ACL.Protocol, $ACL.Weight, $ACL.Stateful, $ACL.IsolationID, $ACL.IdleSessionTimeout)
-                        
-                        Write-Debug -Message ('$MovedHVACL: ''{0}''' -f [string]$MovedHVACL)      
+
+                        Write-Debug -Message ('$MovedHVACL: ''{0}''' -f [string]$MovedHVACL)
                         Write-Debug -Message 'if ($MovedHVACL -notcontains $ACL)'
                         if ($MovedHVACL -notcontains $ACL) {
                             Write-Debug -Message ('$AddVMNetworkAdapterExtendedAclSplat = @{{VMName=''{0}''; Action=''{1}''; Direction=''{2}''; LocalIPAddress=''{3}''; RemoteIPAddress=''{4}''; LocalPort=''{5}''; RemotePort=''{6}''; Protocol=''{7}''; Weight=''{8}''; Stateful=''{9}''; IsolationID=''{10}''}}' -f $VM.Name, $ACL.Action, $ACL.Direction, $ACL.LocalIPAddress, $ACL.RemoteIPAddress, $ACL.LocalPort, $ACL.RemotePort, $ACL.Protocol, $ACL.Weight, $ACL.Stateful, $ACL.IsolationID)
@@ -144,7 +164,7 @@ function Move-SCPoweredDownVirtualMachine {
             $Message = 'Source ({0}) and destination ({1}) servers are the same' -f $SourceVMHost, $DestinationVMHost
             $PSCmdlet.ThrowTerminatingError((New-Object -TypeName 'System.Management.Automation.ErrorRecord' -ArgumentList ((New-Object -TypeName 'System.ArgumentException' -ArgumentList $Message), 'ArgumentException', [System.Management.Automation.ErrorCategory]::InvalidArgument, $null)))
         }
-    
+
         Write-Debug -Message ('EXIT TRY {0}' -f $MyInvocation.MyCommand.Name)
     }
     catch {
