@@ -153,12 +153,12 @@ function Move-SCVirtualMachineReliably {
                                 $Filter = {$_ -in $VM -and $_ -notin $UnmigratableVMs}
                             }
                         }
-                        Write-Debug -Message ('$Filter = ''{0}''' -f $Filter)
+                        Write-Debug -Message ('$Filter = {{{0}}}' -f $Filter)
 
                         Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
                         Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)
 
-                        Write-Debug -Message '$SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript'
+                        Write-Debug -Message ('$SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript {{{0}}}' -f $Filter)
                         $SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript $Filter # Getting those VMs of which we care about
                         Write-Debug -Message ('$SourceSCVMs: ''{0}''' -f [string]$SourceSCVMs.Name)
                         Write-Debug -Message 'if ($SourceSCVMs)'
