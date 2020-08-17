@@ -63,7 +63,7 @@ function Move-SCVirtualMachineReliably {
         Write-Debug -Message ('$VM: ''{0}''' -f [string]$VM.Name)
         Write-Debug -Message ('$BackupThreshold: ''{0}''' -f [string]$BackupThreshold)
         Write-Debug -Message ('$Bulletproof: ''{0}''' -f [string]$Bulletproof)
-        Write-Debug -Message ('$CrashOnUnmigratable: ''{0}''' -f [string]$CrashOnUnmigratable)
+        Write-Debug -Message ('$CrashOnUnmigratable = ${0}' -f $CrashOnUnmigratable)
 
         Write-Debug -Message 'if ($VM)'
         if ($VM) {
@@ -145,9 +145,11 @@ function Move-SCVirtualMachineReliably {
                         Write-Debug -Message ('$PsCmdlet.ParameterSetName: ''{0}''' -f $PsCmdlet.ParameterSetName)
                         switch ($PsCmdlet.ParameterSetName) {
                             'ByHost' {
+                                Write-Debug -Message '$Filter = {$_ -notin $UnmigratableVMs}'
                                 $Filter = {$_ -notin $UnmigratableVMs}
                             }
                             'ByVM' {
+                                Write-Debug -Message '$Filter = {$_ -in $VM -and $_ -notin $UnmigratableVMs}'
                                 $Filter = {$_ -in $VM -and $_ -notin $UnmigratableVMs}
                             }
                         }
@@ -273,10 +275,15 @@ function Move-SCVirtualMachineReliably {
 
                                     Write-Debug -Message 'if ($SCVirtualMachineLiveMigrationEligibility.Result -or $SCVirtualMachineLiveMigrationEligibility.Reason -eq ''NotRunning'')'
                                     if ($SCVirtualMachineLiveMigrationEligibility.Result -or $SCVirtualMachineLiveMigrationEligibility.Reason -eq 'NotRunning') {
+                                        Write-Debug -Message '$VMMigrationRetryInfoCount = ($VMMigrationRetryInfo | Where-Object -FilterScript {$_ -eq $SCVM}).Count'
                                         $VMMigrationRetryInfoCount = ($VMMigrationRetryInfo | Where-Object -FilterScript {$_ -eq $SCVM}).Count
+                                        Write-Debug -Message ('$VMMigrationRetryInfoCount = {0}' -f $VMMigrationRetryInfoCount)
+                                        Write-Debug -Message ('$MaxAttempts = {0}' -f $MaxAttempts)
                                         Write-Debug -Message 'if ($VMMigrationRetryInfoCount -ge $MaxAttempts)'
                                         if ($VMMigrationRetryInfoCount -ge $MaxAttempts) {
                                             Write-Verbose -Message ('VM {0} is unmigratable' -f $SCVM.Name)
+                                            Write-Debug -Message ('$CrashOnUnmigratable = ${0}' -f $CrashOnUnmigratable)
+                                            Write-Debug -Message 'if ($CrashOnUnmigratable)'
                                             if ($CrashOnUnmigratable) {
                                                 $Message = ('Tried to migrate VM {0} {1} times - did not succeed' -f $SCVM.Name, $MaxAttempts)
                                                 $PSCmdlet.ThrowTerminatingError((New-Object -TypeName 'System.Management.Automation.ErrorRecord' -ArgumentList ((New-Object -TypeName 'System.ServiceModel.Channels.RetryException' -ArgumentList $Message), 'RetryException', [System.Management.Automation.ErrorCategory]::OperationTimeout, $SCVM)))
@@ -381,6 +388,8 @@ function Move-SCVirtualMachineReliably {
                                                         Write-Debug -Message 'if ($CurrentDateTime -gt $BackupDateTimeThreshold)'
                                                         if ($CurrentDateTime -gt $BackupDateTimeThreshold) {
                                                             Write-Verbose -Message ('VM {0} is unmigratable' -f $SCVM.Name)
+                                                            Write-Debug -Message ('$CrashOnUnmigratable = ${0}' -f $CrashOnUnmigratable)
+                                                            Write-Debug -Message 'if ($CrashOnUnmigratable)'
                                                             if ($CrashOnUnmigratable) {
                                                                 $Message = ('VM {0} is in backing up state for more than {1} already' -f $SCVM.Name, [string]$BackupThreshold)
                                                                 $PSCmdlet.ThrowTerminatingError((New-Object -TypeName 'System.Management.Automation.ErrorRecord' -ArgumentList ((New-Object -TypeName 'System.TimeoutException' -ArgumentList $Message), 'TimeoutException', [System.Management.Automation.ErrorCategory]::OperationTimeout, $SCVM)))
