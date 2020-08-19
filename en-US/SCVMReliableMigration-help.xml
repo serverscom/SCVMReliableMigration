@@ -138,7 +138,7 @@ Move-SCPoweredDownVirtualMachine -VM $VM -DestinationVMHost (Get-SCVMHost -Compu
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This is a main function in the module. Use it to migrate virtual machines without hassle.</maml:para>
+      <maml:para>This is a main function in the module. Use it to migrate SCVMM-Managed Hyper-V virtual machines hassle free.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>

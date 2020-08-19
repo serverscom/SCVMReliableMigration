@@ -8,7 +8,7 @@ schema: 2.0.0
 # Move-SCVirtualMachineReliably
 
 ## SYNOPSIS
-This is a main function in the module. Use it to migrate virtual machines without hassle.
+This is a main function in the module. Use it to migrate SCVMM-managed Hyper-V virtual machines hassle free.
 
 ## SYNTAX
 
