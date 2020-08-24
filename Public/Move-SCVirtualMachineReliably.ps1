@@ -42,7 +42,10 @@ function Move-SCVirtualMachineReliably {
         [switch]$Bulletproof,
         [Parameter(ParameterSetName = 'ByHost')]
         [Parameter(ParameterSetName = 'ByVM')]
-        [switch]$CrashOnUnmigratable
+        [switch]$CrashOnUnmigratable,
+        [Parameter(ParameterSetName = 'ByHost')]
+        [Parameter(ParameterSetName = 'ByVM')]
+        [switch]$ReturnSourceVMs
     )
 
     $ErrorActionPreference = 'Stop'
@@ -64,6 +67,7 @@ function Move-SCVirtualMachineReliably {
         Write-Debug -Message ('$BackupThreshold: ''{0}''' -f [string]$BackupThreshold)
         Write-Debug -Message ('$Bulletproof: ''{0}''' -f [string]$Bulletproof)
         Write-Debug -Message ('$CrashOnUnmigratable = ${0}' -f $CrashOnUnmigratable)
+        Write-Debug -Message ('$ReturnSourceVMs = ${0}' -f $ReturnSourceVMs)
 
         Write-Debug -Message 'if ($VM)'
         if ($VM) {
@@ -141,6 +145,14 @@ function Move-SCVirtualMachineReliably {
                     }
                     Write-Debug -Message ('$LiveMigrationMaximum = {0}' -f $LiveMigrationMaximum)
 
+                    Write-Debug -Message ('$ReturnSourceVMs = ${0}' -f $ReturnSourceVMs)
+                    Write-Debug -Message ('if ($ReturnSourceVMs)')
+                    if ($ReturnSourceVMs) {
+                        Write-Debug -Message '$FirstRun = $true'
+                        $FirstRun = $true
+                        Write-Debug -Message ('$FirstRun = ${0}' -f $FirstRun)
+                    }
+
                     do {
                         Write-Debug -Message ('$PsCmdlet.ParameterSetName: ''{0}''' -f $PsCmdlet.ParameterSetName)
                         switch ($PsCmdlet.ParameterSetName) {
@@ -161,8 +173,24 @@ function Move-SCVirtualMachineReliably {
                         Write-Debug -Message ('$SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript {{{0}}}' -f $Filter)
                         $SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript $Filter # Getting those VMs of which we care about
                         Write-Debug -Message ('$SourceSCVMs: ''{0}''' -f [string]$SourceSCVMs.Name)
+
                         Write-Debug -Message 'if ($SourceSCVMs)'
                         if ($SourceSCVMs) {
+                            Write-Debug -Message ('$ReturnSourceVMs = ${0}' -f $ReturnSourceVMs)
+                            Write-Debug -Message ('if ($ReturnSourceVMs)')
+                            if ($ReturnSourceVMs) {
+                                Write-Debug -Message ('$FirstRun = ${0}' -f $FirstRun)
+                                Write-Debug -Message 'if ($FirstRun)'
+                                if ($FirstRun) {
+                                    Write-Debug -Message '$SourceVMsOriginal = $SourceSCVMs.Clone()'
+                                    $SourceVMsOriginal = $SourceSCVMs.Clone()
+                                    Write-Debug -Message ('$SourceSCVMs: ''{0}''' -f [string]$SourceVMsOriginal.Name)
+                                    Write-Debug -Message '$FirstRun = $false'
+                                    $FirstRun = $false
+                                    Write-Debug -Message ('$FirstRun = ${0}' -f $FirstRun)
+                                }
+                            }
+
                             Write-Debug -Message '$SourceSCVMsMigrating = $SourceSCVMs | Where-Object -FilterScript {$_.Status -in $SCVMStatesMigrating}'
                             $SourceSCVMsMigrating = $SourceSCVMs | Where-Object -FilterScript {$_.Status -in $SCVMStatesMigrating}
                             Write-Debug -Message ('$SourceSCVMsMigrating: ''{0}''' -f [string]$SourceSCVMsMigrating.Name)
@@ -497,6 +525,10 @@ function Move-SCVirtualMachineReliably {
                     Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
                     Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost) # Make sure our VM objects are fresh
 
+                    Write-Debug -Message '$ReturnUnmigratableVMs = $false'
+                    $ReturnUnmigratableVMs = $false
+                    Write-Debug -Message ('$ReturnUnmigratableVMs = ${0}' -f $ReturnUnmigratableVMs)
+
                     Write-Debug -Message ('$UnmigratableVMs: ''{0}''' -f [string]$UnmigratableVMs.Name)
                     Write-Debug -Message 'if ($UnmigratableVMs)'
                     if ($UnmigratableVMs) {
@@ -516,6 +548,37 @@ function Move-SCVirtualMachineReliably {
                         Write-Debug -Message 'if ($UnmigratableVMs.Count -gt 0)'
                         if ($UnmigratableVMs.Count -gt 0) {
                             Write-Debug -Message ('$UnmigratableVMs: ''{0}''' -f [string]$UnmigratableVMs.Name)
+
+                            Write-Debug -Message '$ReturnUnmigratableVMs = $true'
+                            $ReturnUnmigratableVMs = $true
+                            Write-Debug -Message ('$ReturnUnmigratableVMs = ${0}' -f $ReturnUnmigratableVMs)
+                        }
+                    }
+
+                    Write-Debug -Message ('$ReturnUnmigratableVMs = ${0}' -f $ReturnUnmigratableVMs)
+                    Write-Debug -Message ('$UnmigratableVMs: ''{0}''' -f [string]$UnmigratableVMs.Name)
+                    Write-Debug -Message ('$ReturnSourceVMs = ${0}' -f $ReturnSourceVMs)
+                    Write-Debug -Message ('if ($ReturnSourceVMs)')
+                    if ($ReturnSourceVMs) {
+                        Write-Debug -Message ('$SourceVMsOriginal: ''{0}''' -f [string]$SourceVMsOriginal.Name)
+                        Write-Debug -Message 'if ($ReturnUnmigratableVMs)'
+                        if ($ReturnUnmigratableVMs) {
+                            Write-Debug -Message '@{SourceVMs = $SourceVMsOriginal, UnmigratableVMs = $UnmigratableVMs}'
+                            @{
+                                SourceVMs       = $SourceVMsOriginal
+                                UnmigratableVMs = $UnmigratableVMs
+                            }
+                        }
+                        else {
+                            Write-Debug -Message '@{SourceVMs = $SourceVMsOriginal}'
+                            @{
+                                SourceVMs = $SourceVMsOriginal
+                            }
+                        }
+                    }
+                    else {
+                        Write-Debug -Message 'if ($ReturnUnmigratableVMs)'
+                        if ($ReturnUnmigratableVMs) {
                             Write-Debug -Message '$UnmigratableVMs'
                             $UnmigratableVMs
                         }

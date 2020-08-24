@@ -206,6 +206,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ReturnSourceVMs
+When enabled, the function returns a hashtable, containing a list of virtual machines it tried to move (SourceVMs), and a list of virtual machines which failed to move (UnmigratableVMs), if there are any.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -MigrationJobGetMaxAttempts
 When an asynchronous migration of a VM starts, it needs some time before appearing in the list of jobs. Before proceeding to the next VM, the function tries to find the migration job it has just created in the list. This parameter specifies the maximum number of such attempts.
 
