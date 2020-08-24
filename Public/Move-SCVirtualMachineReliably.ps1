@@ -184,7 +184,7 @@ function Move-SCVirtualMachineReliably {
                                 if ($FirstRun) {
                                     Write-Debug -Message '$SourceVMsOriginal = $SourceSCVMs.Clone()'
                                     $SourceVMsOriginal = $SourceSCVMs.Clone()
-                                    Write-Debug -Message ('$SourceSCVMs: ''{0}''' -f [string]$SourceVMsOriginal.Name)
+                                    Write-Debug -Message ('$SourceVMsOriginal: ''{0}''' -f [string]$SourceVMsOriginal.Name)
                                     Write-Debug -Message '$FirstRun = $false'
                                     $FirstRun = $false
                                     Write-Debug -Message ('$FirstRun = ${0}' -f $FirstRun)
