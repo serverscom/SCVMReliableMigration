@@ -53,7 +53,7 @@ function Move-SCPoweredDownVirtualMachine {
                 Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments = @{{VirtualNetworkAdapter = $VMNetworkAdapter, JobGroup = ''{0}''}}' -f $JobGroupId)
                 $SetSCVirtualNetworkAdapterArguments = @{
                     VirtualNetworkAdapter = $VMNetworkAdapter
-                    JobGroup = $JobGroupId
+                    JobGroup              = $JobGroupId
                 }
                 Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments: ''{0}''' -f ($SetSCVirtualNetworkAdapterArguments | Out-String))
 

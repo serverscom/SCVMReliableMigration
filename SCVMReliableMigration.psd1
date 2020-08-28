@@ -25,6 +25,6 @@
             ExternalModuleDependencies = @(
                 'virtualmachinemanager'
             )
-        }  
+        }
     }
 }
