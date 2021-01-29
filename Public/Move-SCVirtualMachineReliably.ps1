@@ -240,10 +240,10 @@ function Move-SCVirtualMachineReliably {
 
                                 Write-Debug -Message '$SourceVMHostVMs = Get-SCVirtualMachine -VMHost $SourceVMHost'
                                 $SourceVMHostVMs = Get-SCVirtualMachine -VMHost $SourceVMHost
-                                Write-Debug -Message ('$SourceVMHostVMs: ''{0}''' -f [string]$SourceSCVMsNotMigratingRunning.Name)
+                                Write-Debug -Message ('$SourceVMHostVMs: ''{0}''' -f [string]$SourceVMHostVMs.Name)
                                 Write-Debug -Message '$SourceVMHostVMs = Get-SCVirtualMachine -VMHost $DestinationVMHost'
                                 $DestinationVMHostVMs = Get-SCVirtualMachine -VMHost $DestinationVMHost
-                                Write-Debug -Message ('$DestinationVMHostVMs: ''{0}''' -f [string]$SourceSCVMsNotMigratingRunning.Name)
+                                Write-Debug -Message ('$DestinationVMHostVMs: ''{0}''' -f [string]$DestinationVMHostVMs.Name)
 
                                 Write-Debug -Message '$SourceVMHostMigratingVMs = $SourceVMHostVMs | Where-Object -FilterScript {$_.Status -in $SCVMStatesMigrating}'
                                 $SourceVMHostMigratingVMs = $SourceVMHostVMs | Where-Object -FilterScript {$_.Status -in $SCVMStatesMigrating}
