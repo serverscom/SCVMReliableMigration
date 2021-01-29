@@ -468,8 +468,32 @@ function Move-SCVirtualMachineReliably {
                                                         $null = $VMMigrationRetryInfo.Add($SCVM)
                                                         Write-Debug -Message ('$VMMigrationRetryInfo: ''{0}''' -f [string]$VMMigrationRetryInfo.Name)
                                                         Write-Verbose -Message ('Trying to migrate a powered-down VM {0}' -f $SCVM.Name)
-                                                        Write-Debug -Message ('Move-SCPoweredDownVirtualMachine -VM $SCVM -VMHost $DestinationVMHost -Path ''{0}''' -f $Path)
-                                                        Move-SCPoweredDownVirtualMachine -VM $SCVM -VMHost $DestinationVMHost -Path $Path
+                                                        try {
+                                                            Write-Debug -Message ('Move-SCPoweredDownVirtualMachine -VM $SCVM -VMHost $DestinationVMHost -Path ''{0}''' -f $Path)
+                                                            Move-SCPoweredDownVirtualMachine -VM $SCVM -VMHost $DestinationVMHost -Path $Path
+                                                        }
+                                                        catch {
+                                                            Write-Debug -Message ('$_.InvocationInfo.MyCommand.Name: {0}' -f $_.InvocationInfo.MyCommand.Name)
+                                                            Write-Debug -Message 'if ($_.InvocationInfo.MyCommand.Name -eq ''Move-SCVirtualMachine'')'
+                                                            if ($_.InvocationInfo.MyCommand.Name -eq 'Move-SCVirtualMachine') {
+                                                                Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
+                                                                Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)
+                                                                Write-Debug -Message '$null = Read-SCVirtualMachine -VM $SCVM'
+                                                                $null = Read-SCVirtualMachine -VM $SCVM
+                                                                Write-Debug -Message '$SCVirtualMachineLiveMigrationEligibility = Test-SCVirtualMachineLiveMigrationEligibility -VM $SCVM -VMHost $DestinationVMHost'
+                                                                $SCVirtualMachineLiveMigrationEligibility = Test-SCVirtualMachineLiveMigrationEligibility -VM $SCVM -VMHost $DestinationVMHost
+                                                                Write-Debug -Message ('$SCVirtualMachineLiveMigrationEligibility.Reason: ''{0}''' -f $SCVirtualMachineLiveMigrationEligibility.Reason)
+                                                                Write-Debug -Message 'if ($SCVirtualMachineLiveMigrationEligibility.Reason -eq ''Failed'')'
+                                                                if ($SCVirtualMachineLiveMigrationEligibility.Reason -eq 'Failed') {
+                                                                    Write-Debug -Message '$null = Repair-SCVirtualMachine -VM $SCVM -Dismiss -Force'
+                                                                    $null = Repair-SCVirtualMachine -VM $SCVM -Dismiss -Force
+                                                                }
+                                                            }
+                                                            else {
+                                                                Write-Debug -Message ('{0}: $PSCmdlet.ThrowTerminatingError($_)' -f $MyInvocation.MyCommand.Name)
+                                                                $PSCmdlet.ThrowTerminatingError($_)
+                                                            }
+                                                        }
                                                         Write-Debug -Message '$LastVMWasPoweredDown = $true'
                                                         $LastVMWasPoweredDown = $true
                                                         Write-Debug -Message ('$LastVMWasPoweredDown: ''{0}''' -f [string]$LastVMWasPoweredDown)
