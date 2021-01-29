@@ -8,7 +8,7 @@ schema: 2.0.0
 # Move-SCVirtualMachineReliably
 
 ## SYNOPSIS
-This is a main function in the module. Use it to migrate virtual machines without hassle.
+This is a main function in the module. Use it to migrate SCVMM-managed Hyper-V virtual machines hassle free.
 
 ## SYNTAX
 
@@ -193,6 +193,21 @@ Accept wildcard characters: False
 
 ### -CrashOnUnmigratable
 By default, at the end, the function returns all machines which it was unable to migrate. Enabling this parameter changes the function's behavior to raise an exception as soon as an unmigratable machine is found.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ReturnSourceVMs
+When enabled, the function returns a hashtable, containing a list of virtual machines it tried to move (SourceVMs), and a list of virtual machines which failed to move (UnmigratableVMs), if there are any.
 
 ```yaml
 Type: SwitchParameter

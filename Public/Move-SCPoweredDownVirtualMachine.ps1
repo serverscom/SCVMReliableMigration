@@ -53,7 +53,7 @@ function Move-SCPoweredDownVirtualMachine {
                 Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments = @{{VirtualNetworkAdapter = $VMNetworkAdapter, JobGroup = ''{0}''}}' -f $JobGroupId)
                 $SetSCVirtualNetworkAdapterArguments = @{
                     VirtualNetworkAdapter = $VMNetworkAdapter
-                    JobGroup = $JobGroupId
+                    JobGroup              = $JobGroupId
                 }
                 Write-Debug -Message ('$SetSCVirtualNetworkAdapterArguments: ''{0}''' -f ($SetSCVirtualNetworkAdapterArguments | Out-String))
 
@@ -109,10 +109,23 @@ function Move-SCPoweredDownVirtualMachine {
                     $null = Move-SCVirtualMachine -VM $VM -VMHost $DestinationVMHost -Path $Path -JobGroup $JobGroupId
                 }
                 catch {
-                    Write-Debug -Message ($_)
-                    Write-Debug -Message ('Exception.HResult: {0}' -f $_.Exception.HResult)
-                    Write-Debug -Message 'return'
-                    return
+                    Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
+                    Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)
+                    Write-Debug -Message '$null = Read-SCVirtualMachine -VM $SCVM'
+                    $null = Read-SCVirtualMachine -VM $SCVM
+                    Write-Debug -Message ('$VM.VMHost: {0}' -f [string]$VM.VMHost)
+                    Write-Debug -Message ('$DestinationVMHost: {0}' -f [string]$DestinationVMHost)
+                    Write-Debug -Message 'if ($VM.VMHost -eq $DestinationVMHost)'
+                    if ($VM.VMHost -eq $DestinationVMHost) {
+                        Write-Debug -Message 'continue'
+                        continue
+                    }
+                    else {
+                        Write-Debug -Message ($_)
+                        Write-Debug -Message ('Exception.HResult: {0}' -f $_.Exception.HResult)
+                        Write-Debug -Message ('{0}: Throw $_' -f $MyInvocation.MyCommand.Name)
+                        throw $_
+                    }
                 }
 
                 Write-Debug -Message ('$HVACL: ''{0}''' -f [string]$HVACL)
@@ -170,8 +183,8 @@ function Move-SCPoweredDownVirtualMachine {
     catch {
         Write-Debug -Message ('ENTER CATCH {0}' -f $MyInvocation.MyCommand.Name)
 
-        Write-Debug -Message ('{0}: $PSCmdlet.ThrowTerminatingError($_)' -f $MyInvocation.MyCommand.Name)
-        $PSCmdlet.ThrowTerminatingError($_)
+        Write-Debug -Message ('{0}: Throw $_' -f $MyInvocation.MyCommand.Name)
+        throw $_
 
         Write-Debug -Message ('EXIT CATCH {0}' -f $MyInvocation.MyCommand.Name)
     }
