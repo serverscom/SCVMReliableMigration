@@ -22,7 +22,7 @@ function Test-SCVirtualMachineBackingUpStatus {
         $VMHost = $VM.VMHost
         Write-Debug -Message ('$VMHost: ''{0}''' -f [string]$VMHost)
 
-        Write-Debug -Message ('$HVVM = Invoke-Command -ComputerName ''{0}'' -ScriptBlock {{Get-VM -Id ''{1}'')}}' -f $VMHost.Name, $VM.VMId)
+        Write-Debug -Message ('$HVVM = Invoke-Command -ComputerName ''{0}'' -ScriptBlock {{Get-VM -Id ''{1}''}}' -f $VMHost.Name, $VM.VMId)
         $HVVM = Invoke-Command -ComputerName $VMHost.Name -ScriptBlock {Get-VM -Id $using:VM.VMid}
         Write-Debug -Message ('$HVVM: ''{0}''' -f [string]$HVVM)
 
