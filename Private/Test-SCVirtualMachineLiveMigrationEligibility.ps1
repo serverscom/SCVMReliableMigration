@@ -99,7 +99,7 @@ function Test-SCVirtualMachineLiveMigrationEligibility {
         Write-Debug -Message ('$Reason = ''{0}''' -f $Reason)
         Write-Debug -Message ('$Result: ''{0}''' -f [string]$Result)
 
-        Write-Debug -Message ('@{{Result = {0}}}; $Reason = ''{1}''; Status = ''{2}''' -f [string]$Result, $Reason, [string]$VM.Status)
+        Write-Debug -Message ('@{{Result = {0}; $Reason = ''{1}''; Status = ''{2}''}}' -f [string]$Result, $Reason, [string]$VM.Status)
         @{
             Result = $Result
             Reason = $Reason
