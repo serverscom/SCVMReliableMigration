@@ -100,6 +100,13 @@ function Move-SCVirtualMachineReliably {
             Write-Debug -Message ('$DestinationVMHost.ServerConnection.ManagedComputer.ID: ''{0}''' -f [string]$DestinationVMHost.ServerConnection.ManagedComputer.ID)
             Write-Debug -Message 'if ($SourceVMHost.ServerConnection.ManagedComputer.ID -eq $DestinationVMHost.ServerConnection.ManagedComputer.ID)'
             if ($SourceVMHost.ServerConnection.ManagedComputer.ID -eq $DestinationVMHost.ServerConnection.ManagedComputer.ID) {
+
+                Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
+                Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)
+
+                Write-Debug -Message 'Repair-SCVMMigrationFailed -VMHost ($SourceVMHost, $DestinationVMHost)'
+                Repair-SCVMMigrationFailed -VMHost ($SourceVMHost, $DestinationVMHost)
+
                 Write-Debug -Message 'if (-not $VM)'
                 if (-not $VM) {
                     Write-Debug -Message '$VM = Get-SCVirtualMachine -VMHost $SourceVMHost'
@@ -166,9 +173,6 @@ function Move-SCVirtualMachineReliably {
                             }
                         }
                         Write-Debug -Message ('$Filter = {{{0}}}' -f $Filter)
-
-                        Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
-                        Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)
 
                         Write-Debug -Message ('$SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript {{{0}}}' -f $Filter)
                         $SourceSCVMs = Get-SCVirtualMachine -VMHost $SourceVMHost | Where-Object -FilterScript $Filter # Getting those VMs of which we care about
@@ -287,6 +291,10 @@ function Move-SCVirtualMachineReliably {
                                 Write-Debug -Message 'if ($CurrentLiveMigrationCount -lt $LiveMigrationMaximum)'
                                 if ($CurrentLiveMigrationCount -lt $LiveMigrationMaximum) {
                                     # If the migration queue is not full (if it is full, we do no care who filled it up)
+
+                                    Write-Debug -Message '$SCVM = Read-SCVirtualMachine -VM $SCVM'
+                                    $SCVM = Read-SCVirtualMachine -VM $SCVM
+
                                     $SCVirtualMachineLiveMigrationEligibility = Test-SCVirtualMachineLiveMigrationEligibility -VM $SCVM -VMHost $DestinationVMHost
                                     Write-Debug -Message ('$SCVirtualMachineLiveMigrationEligibility.Result: ''{0}''' -f $SCVirtualMachineLiveMigrationEligibility.Result)
                                     Write-Debug -Message ('$SCVirtualMachineLiveMigrationEligibility.Reason: ''{0}''' -f $SCVirtualMachineLiveMigrationEligibility.Reason)
@@ -350,8 +358,13 @@ function Move-SCVirtualMachineReliably {
                                                 catch {
                                                     Write-Debug -Message ($_)
                                                     Write-Debug -Message ('Exception.HResult: {0}' -f $_.Exception.HResult)
+                                                    Write-Debug -Message ('$SCVM.Status: ''{0}''' -f [string]$SCVM.Status)
+                                                    Write-Debug -Message ('$SCVM.VMHost: ''{0}''' -f [string]$SCVM.VMHost)
+                                                    Write-Debug -Message 'Repair-SCVMMigrationFailed -VMHost $SCVM.VMHost'
+                                                    Repair-SCVMMigrationFailed -VMHost $SCVM.VMHost
                                                     Write-Debug -Message '$null = Read-SCVirtualMachine -VM $SCVM'
                                                     $null = Read-SCVirtualMachine -VM $SCVM
+                                                    Write-Debug -Message ('$SCVM.Status: ''{0}''' -f [string]$SCVM.Status)
                                                     Write-Debug -Message 'Continue'
                                                     Continue
                                                 }
@@ -540,6 +553,9 @@ function Move-SCVirtualMachineReliably {
                                 Start-Sleep -Seconds $Timeout
                             }
                         }
+
+                        Write-Debug -Message 'Repair-SCVMMigrationFailed -VMHost ($SourceVMHost, $DestinationVMHost)'
+                        Repair-SCVMMigrationFailed -VMHost ($SourceVMHost, $DestinationVMHost)
 
                         Write-Debug -Message ('$SourceSCVMs: ''{0}''' -f [string]$SourceSCVMs.Name)
                         Write-Debug -Message 'while ($SourceSCVMs)'
