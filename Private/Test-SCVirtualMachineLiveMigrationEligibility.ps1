@@ -28,6 +28,20 @@ function Test-SCVirtualMachineLiveMigrationEligibility {
         )
         Write-Debug -Message ('$SCVMStatesPoweredDown: {0}' -f [string]$SCVMStatesPoweredDown)
 
+        $SCVMStatesFailed = @(
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::CreationFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::TemplateCreationFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::CustomizationFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::UpdateFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::ReplacementFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::MigrationFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::CheckpointFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::ShieldingFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::P2VCreationFailed
+            [Microsoft.VirtualManager.Utils.VMComputerSystemState]::V2VCreationFailed
+        )
+        Write-Debug -Message ('$SCVMStatesPoweredDown: {0}' -f [string]$SCVMStatesFailed)
+
         $SCVMStatesRunning = @(
             [Microsoft.VirtualManager.Utils.VMComputerSystemState]::Running
         )
@@ -74,7 +88,7 @@ function Test-SCVirtualMachineLiveMigrationEligibility {
             Write-Debug -Message '$Reason = ''Migrating'''
             $Reason = 'Migrating'
         }
-        elseif ($VM.Status -like '*Failed') {
+        elseif ($VM.Status -in $SCVMStatesFailed) {
             Write-Debug -Message '$Reason = ''Failed'''
             $Reason = 'Failed'
         }
@@ -99,7 +113,7 @@ function Test-SCVirtualMachineLiveMigrationEligibility {
         Write-Debug -Message ('$Reason = ''{0}''' -f $Reason)
         Write-Debug -Message ('$Result: ''{0}''' -f [string]$Result)
 
-        Write-Debug -Message ('@{{Result = {0}}}; $Reason = ''{1}''; Status = ''{2}''' -f [string]$Result, $Reason, [string]$VM.Status)
+        Write-Debug -Message ('@{{Result = {0}; $Reason = ''{1}''; Status = ''{2}''}}' -f [string]$Result, $Reason, [string]$VM.Status)
         @{
             Result = $Result
             Reason = $Reason

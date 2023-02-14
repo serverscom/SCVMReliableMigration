@@ -23,6 +23,9 @@ function Move-SCPoweredDownVirtualMachine {
         Write-Debug -Message ('$VMHost: ''{0}''' -f [string]$VMHost)
         Write-Debug -Message ('$Path = ''{0}''' -f $Path)
 
+        Write-Debug -Message '$null = Read-SCVirtualMachine -VM $VM'
+        $null = Read-SCVirtualMachine -VM $VM
+
         Write-Debug -Message '$SourceVMHost = $VM.VMHost'
         $SourceVMHost = $VM.VMHost
         Write-Debug -Message ('$SourceVMHost: ''{0}''' -f [string]$SourceVMHost)
@@ -109,20 +112,24 @@ function Move-SCPoweredDownVirtualMachine {
                     $null = Move-SCVirtualMachine -VM $VM -VMHost $DestinationVMHost -Path $Path -JobGroup $JobGroupId
                 }
                 catch {
+                    Write-Debug -Message ($_)
+                    Write-Debug -Message ('Exception.HResult: {0}' -f $_.Exception.HResult)
+                    Write-Debug -Message ('$VM.Status: ''{0}''' -f [string]$VM.Status)
                     Write-Debug -Message 'Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)'
                     Read-SCVMHosts -VMHost ($SourceVMHost, $DestinationVMHost)
-                    Write-Debug -Message '$null = Read-SCVirtualMachine -VM $SCVM'
-                    $null = Read-SCVirtualMachine -VM $SCVM
-                    Write-Debug -Message ('$VM.VMHost: {0}' -f [string]$VM.VMHost)
-                    Write-Debug -Message ('$DestinationVMHost: {0}' -f [string]$DestinationVMHost)
+                    Write-Debug -Message 'Repair-SCVMMigrationFailed -VMHost ($SourceVMHost, $DestinationVMHost)'
+                    Repair-SCVMMigrationFailed -VMHost ($SourceVMHost, $DestinationVMHost)
+                    Write-Debug -Message '$null = Read-SCVirtualMachine -VM $VM'
+                    $null = Read-SCVirtualMachine -VM $VM
+                    Write-Debug -Message ('$VM.Status: ''{0}''' -f [string]$VM.Status)
+                    Write-Debug -Message ('$VM.VMHost: ''{0}''' -f [string]$VM.VMHost)
+                    Write-Debug -Message ('$DestinationVMHost: ''{0}''' -f [string]$DestinationVMHost)
                     Write-Debug -Message 'if ($VM.VMHost -eq $DestinationVMHost)'
                     if ($VM.VMHost -eq $DestinationVMHost) {
                         Write-Debug -Message 'continue'
                         continue
                     }
                     else {
-                        Write-Debug -Message ($_)
-                        Write-Debug -Message ('Exception.HResult: {0}' -f $_.Exception.HResult)
                         Write-Debug -Message ('{0}: Throw $_' -f $MyInvocation.MyCommand.Name)
                         throw $_
                     }

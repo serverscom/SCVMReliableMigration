@@ -39,22 +39,28 @@ function Read-SCVMHosts {
                 }
                 catch {
                     Write-Debug -Message ('$_.Exception.HResult: {0}' -f $_.Exception.HResult)
-                    Write-Debug -Message 'if ($_.Exception.HResult -eq 2606)'
-                    if ($_.Exception.HResult -eq 2606) {
-                        Write-Debug -Message ('$Count = {0}' -f $Count)
-                        Write-Debug -Message ('$MaxAttempts = {0}' -f $MaxAttempts)
-                        Write-Debug -Message 'if ($Count -ge $MaxAttempts)'
-                        if ($Count -ge $MaxAttempts) {
-                            $Message = ('Could not refresh SCVMM Host ''{0}'' after ''{1}'' retries.' -f $SCVMHost, $MaxAttempts)
-                            $PSCmdlet.ThrowTerminatingError((New-Object -TypeName 'System.Management.Automation.ErrorRecord' -ArgumentList ((New-Object -TypeName 'System.ApplicationException' -ArgumentList ($Message, $_)), 'HostLocked', [System.Management.Automation.ErrorCategory]::InvalidResult, $null)))
-                        }
-                        Write-Debug -Message ('Start-Sleep -Seconds {0}' -f $Timeout)
-                        Start-Sleep -Seconds $Timeout
-                    }
-                    else {
+                    Write-Debug -Message ('$_.Exception.Message: {0}' -f $_.Exception.Message)
+                    Write-Debug -Message ('$_.InvocationInfo.PositionMessage: {0}' -f $_.InvocationInfo.PositionMessage)
+                    Write-Debug -Message ('$_.ScriptStackTrace: {0}' -f $_.ScriptStackTrace)
+                    Write-Debug -Message ('$_.Exception.ScriptStackTrace: {0}' -f $_.Exception.ScriptStackTrace)
+                    Write-Debug -Message ('$_.TargetObject: {0}' -f $_.TargetObject)
+                    Write-Debug -Message ('$_.FullyQualifiedErrorId: {0}' -f $_.FullyQualifiedErrorId)
+                    Write-Debug -Message ('$_.CategoryInfo.Category: {0}' -f $_.CategoryInfo.Category)
+                    Write-Debug -Message ('$_.CategoryInfo.Activity: {0}' -f $_.CategoryInfo.Activity)
+                    Write-Debug -Message ('$_.CategoryInfo.Reason: {0}' -f $_.CategoryInfo.Reason)
+                    Write-Debug -Message ('$_.CategoryInfo.TargetName: {0}' -f $_.CategoryInfo.TargetName)
+                    Write-Debug -Message ('$_.CategoryInfo.TargetType: {0}' -f $_.CategoryInfo.TargetType)
+
+                    Write-Debug -Message ('$Count = {0}' -f $Count)
+                    Write-Debug -Message ('$MaxAttempts = {0}' -f $MaxAttempts)
+                    Write-Debug -Message 'if ($Count -ge $MaxAttempts)'
+                    if ($Count -ge $MaxAttempts) {
                         Write-Debug -Message ('{0}: $PSCmdlet.ThrowTerminatingError($_)' -f $MyInvocation.MyCommand.Name)
                         $PSCmdlet.ThrowTerminatingError($_)
-                    }
+                        }
+
+                    Write-Debug -Message ('Start-Sleep -Seconds {0}' -f $Timeout)
+                    Start-Sleep -Seconds $Timeout
                 }
             }
         }
